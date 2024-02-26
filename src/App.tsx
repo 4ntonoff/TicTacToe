@@ -1,9 +1,17 @@
-import React, { useState } from "react";
+import React from "react";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  resetGame,
+  selectSquares,
+  selectWinner,
+  selectXIsNext,
+  setSquare,
+  setWinner,
+  setXIsNext,
+} from "./gameSlice";
 import "./App.css";
 
 type SquareValue = "X" | "O" | null;
-
-const initialBoard: SquareValue[] = Array(9).fill(null);
 
 const calculateWinner = (squares: SquareValue[]): SquareValue | null => {
   const lines: number[][] = [
@@ -26,47 +34,51 @@ const calculateWinner = (squares: SquareValue[]): SquareValue | null => {
 };
 
 function App() {
-  const [squares, setSquares] = useState<SquareValue[]>(initialBoard);
-  const [xIsNext, setXIsNext] = useState<boolean>(true);
-  const [winner, setWinner] = useState<SquareValue | "Draw" | null>(null);
+  const dispatch = useDispatch();
+  const squares = useSelector(selectSquares);
+  const xIsNext = useSelector(selectXIsNext);
+  const winner = useSelector(selectWinner);
 
   const handleClick = (i: number): void => {
     if (winner || squares[i]) return;
 
     const newSquares: SquareValue[] = [...squares];
     newSquares[i] = xIsNext ? "X" : "O";
-    setSquares(newSquares);
-    setXIsNext(!xIsNext);
+    dispatch(setSquare({ index: i, value: newSquares[i] }));
 
     const gameWinner = calculateWinner(newSquares);
     if (gameWinner) {
-      setWinner(gameWinner);
+      dispatch(setWinner(gameWinner));
       setTimeout(() => {
-        setSquares(initialBoard);
-        setWinner(null);
+        dispatch(resetGame());
       }, 5000);
     } else if (!newSquares.includes(null)) {
-      // Check for a draw
-      setWinner("Draw");
+      dispatch(setWinner("Draw"));
       setTimeout(() => {
-        setSquares(initialBoard);
-        setWinner(null);
+        dispatch(resetGame());
       }, 5000);
+    } else {
+      dispatch(setXIsNext(!xIsNext));
     }
   };
 
   const isBoardDisabled = (isXNext: boolean): boolean =>
     (isXNext && !xIsNext) || (!isXNext && xIsNext);
 
-  const getStatus = (isXNext: boolean): string => {
+  const getStatus = (
+    isXNext: boolean,
+    squares: SquareValue[],
+    winner: SquareValue | "Draw" | null
+  ): string => {
     if (winner === "Draw") {
       return "Draw";
     } else if (winner) {
-      return (isXNext && winner === "X") || (!isXNext && winner === "O")
-        ? "You win!"
-        : "You lose!";
+      return isXNext ? "You win!" : "You lose!";
     } else {
-      return xIsNext === isXNext ? "Your turn" : "Not your turn";
+      const currentPlayer = isXNext ? "X" : "O";
+      const isCurrentPlayerTurn =
+        squares.filter((square) => square === currentPlayer).length % 2 === 0;
+      return isCurrentPlayerTurn ? "Your turn" : "Not your turn";
     }
   };
 
@@ -80,11 +92,6 @@ function App() {
     </button>
   );
 
-  const resetGame = (): void => {
-    setSquares(initialBoard);
-    setWinner(null);
-  };
-
   return (
     <div className="App">
       <div className="game">
@@ -92,7 +99,10 @@ function App() {
           <span className="player primary-text">Player X</span>
           <div className="score">
             <div className="score-text">Score: 0:0</div>
-            <button onClick={resetGame} className="reset-button">
+            <button
+              onClick={() => dispatch(resetGame())}
+              className="reset-button"
+            >
               Reset
             </button>
           </div>
@@ -100,7 +110,10 @@ function App() {
         </div>
         <div className="main">
           <div className="player-content">
-            <span className="status primary-text">{getStatus(true)}</span>
+            <span className="status primary-text">
+              {getStatus(true, squares, winner)}
+            </span>
+
             <div className="gametable-container">
               <div className="gametable-row">
                 {renderSquare(0, true)}
@@ -120,7 +133,9 @@ function App() {
             </div>
           </div>
           <div className="player-content">
-            <span className="status primary-text">{getStatus(false)}</span>
+            <span className="status primary-text">
+              {getStatus(false, squares, winner)}
+            </span>
             <div className="gametable-container">
               <div className="gametable-row">
                 {renderSquare(0, false)}
