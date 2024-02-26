@@ -28,7 +28,7 @@ const calculateWinner = (squares: SquareValue[]): SquareValue | null => {
 function App() {
   const [squares, setSquares] = useState<SquareValue[]>(initialBoard);
   const [xIsNext, setXIsNext] = useState<boolean>(true);
-  const [winner, setWinner] = useState<SquareValue | null>(null);
+  const [winner, setWinner] = useState<SquareValue | "Draw" | null>(null);
 
   const handleClick = (i: number): void => {
     if (winner || squares[i]) return;
@@ -43,7 +43,13 @@ function App() {
       setWinner(gameWinner);
       setTimeout(() => {
         setSquares(initialBoard);
-        //Set the timeout before the game resets
+        setWinner(null);
+      }, 5000);
+    } else if (!newSquares.includes(null)) {
+      // Check for a draw
+      setWinner("Draw");
+      setTimeout(() => {
+        setSquares(initialBoard);
         setWinner(null);
       }, 5000);
     }
@@ -51,6 +57,18 @@ function App() {
 
   const isBoardDisabled = (isXNext: boolean): boolean =>
     (isXNext && !xIsNext) || (!isXNext && xIsNext);
+
+  const getStatus = (isXNext: boolean): string => {
+    if (winner === "Draw") {
+      return "Draw";
+    } else if (winner) {
+      return (isXNext && winner === "X") || (!isXNext && winner === "O")
+        ? "You win!"
+        : "You lose!";
+    } else {
+      return xIsNext === isXNext ? "Your turn" : "Not your turn";
+    }
+  };
 
   const renderSquare = (i: number, isXNext: boolean): JSX.Element => (
     <button
@@ -65,28 +83,24 @@ function App() {
   const resetGame = (): void => {
     setSquares(initialBoard);
     setWinner(null);
-    console.log("Game reset");
   };
 
-  const status = winner
-    ? `Winner: ${winner}`
-    : `Next player: ${xIsNext ? "X" : "O"}`;
   return (
     <div className="App">
       <div className="game">
         <div className="heading">
-          <span className="player primary-text">Player 1</span>
+          <span className="player primary-text">Player X</span>
           <div className="score">
             <div className="score-text">Score: 0:0</div>
             <button onClick={resetGame} className="reset-button">
               Reset
             </button>
           </div>
-          <span className="player">Player 2</span>
+          <span className="player">Player O</span>
         </div>
         <div className="main">
           <div className="player-content">
-            <span className="status primary-text">{status}</span>
+            <span className="status primary-text">{getStatus(true)}</span>
             <div className="gametable-container">
               <div className="gametable-row">
                 {renderSquare(0, true)}
@@ -106,8 +120,7 @@ function App() {
             </div>
           </div>
           <div className="player-content">
-            {/* TODO status change */}
-            <span className="status primary-text">{status}</span>
+            <span className="status primary-text">{getStatus(false)}</span>
             <div className="gametable-container">
               <div className="gametable-row">
                 {renderSquare(0, false)}
