@@ -6,7 +6,6 @@ import {
   setSquare,
   setWinner,
   setXIsNext,
-  selectScores,
 } from "../gameSlice";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -38,8 +37,9 @@ const calculateWinner = (squares: SquareValue[]): SquareValue | null => {
 const Gametable: React.FC<ChatProps> = ({ isFirst }) => {
   const dispatch = useDispatch();
   const squares = useSelector(selectSquares);
-  const xIsNext = useSelector(selectXIsNext);
   const winner = useSelector(selectWinner);
+  const xIsNext = useSelector(selectXIsNext);
+
   const handleClick = (i: number): void => {
     if (winner || squares[i]) return;
 
@@ -60,6 +60,7 @@ const Gametable: React.FC<ChatProps> = ({ isFirst }) => {
       }, 5000);
     } else {
       dispatch(setXIsNext(!xIsNext));
+      console.log("asdf" + xIsNext);
     }
   };
   const isBoardDisabled = (isXNext: boolean): boolean =>
@@ -72,9 +73,9 @@ const Gametable: React.FC<ChatProps> = ({ isFirst }) => {
     if (winner === "Draw") {
       return "Draw";
     } else if (winner) {
-      return "You " + (isXNext ? "win" : "lose") + "!";
+      return "You " + (!isXNext ? "win" : "lose") + "!";
     } else {
-      return isXNext ? "Your turn" : "Wait your opponent";
+      return !isXNext && isFirst ? "Your turn" : "Wait your opponent";
     }
   };
 
