@@ -73,17 +73,24 @@ body {
 .gametable-item {
   width: 100px;
   height: 100px;
-  color: #dadada;
+  color: #78a5ff;
+  font-weight: 1000;
+  border: none;
   border-right: 2px solid #525a6b;
+  background: transparent;
   line-height: 100px;
   text-align: center;
-  font-size: 24px;
+  font-family: Courier, "Courier New", monospace;
+  font-size: 58px;
   transition: all 0.5s;
 }
-
 .gametable-item:hover {
   background-color: #464f5f;
   cursor: pointer;
+}
+button:disabled:hover {
+  background-color: transparent;
+  cursor: default;
 }
 
 .gametable-item:last-child {
