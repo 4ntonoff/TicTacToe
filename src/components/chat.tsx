@@ -1,5 +1,3 @@
-import "../App.css";
-
 interface ChatProps {
   player: "X" | "O" | null;
 }
