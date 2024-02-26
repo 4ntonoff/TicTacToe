@@ -77,7 +77,7 @@ function App() {
     } else if (winner) {
       return "You " + (isXNext ? "win" : "lose") + "!";
     } else {
-      return isXNext ? "Your turn" : "Not your turn";
+      return isXNext ? "Your turn" : "Wait your opponent";
     }
   };
 
@@ -131,6 +131,40 @@ function App() {
                 {renderSquare(8, true)}
               </div>
             </div>
+            <div className="chat">
+              <div className="chat-header">
+                <div className="chat-icon">X</div>
+                <div className="chat-name">Player X</div>
+              </div>
+              <div className="chat-body">
+                <div className="chat-messages-section">
+                  <div className="chat-incoming-message">
+                    Incoming Message
+                    <div className="chat-message-time">18:12</div>
+                  </div>
+                  <div className="chat-incoming-message">
+                    Incoming Message
+                    <div className="chat-message-time">18:12</div>
+                  </div>
+                  <div className="chat-outcoming-message">
+                    Outcoming Message
+                    <div className="chat-message-time">18:12</div>
+                  </div>
+                  <div className="chat-outcoming-message">
+                    Outcoming Message
+                    <div className="chat-message-time">18:12</div>
+                  </div>
+                </div>
+                <div className="chat-input-section">
+                  <input
+                    className="chat-input"
+                    placeholder="Message"
+                    type="text"
+                  />
+                  <button className="chat-send-btn">Send</button>
+                </div>
+              </div>
+            </div>
           </div>
           <div className="player-content">
             <span className="status primary-text">
@@ -151,6 +185,41 @@ function App() {
                 {renderSquare(6, false)}
                 {renderSquare(7, false)}
                 {renderSquare(8, false)}
+              </div>
+            </div>
+
+            <div className="chat">
+              <div className="chat-header">
+                <div className="chat-icon">O</div>
+                <div className="chat-name">Player O</div>
+              </div>
+              <div className="chat-body">
+                <div className="chat-messages-section">
+                  <div className="chat-incoming-message">
+                    Incoming Message
+                    <div className="chat-message-time">18:12</div>
+                  </div>
+                  <div className="chat-incoming-message">
+                    Incoming Message
+                    <div className="chat-message-time">18:12</div>
+                  </div>
+                  <div className="chat-outcoming-message">
+                    Outcoming Message
+                    <div className="chat-message-time">18:12</div>
+                  </div>
+                  <div className="chat-outcoming-message">
+                    Outcoming Message
+                    <div className="chat-message-time">18:12</div>
+                  </div>
+                </div>
+                <div className="chat-input-section">
+                  <input
+                    className="chat-input"
+                    placeholder="Message"
+                    type="text"
+                  />
+                  <button className="chat-send-btn">Send</button>
+                </div>
               </div>
             </div>
           </div>
