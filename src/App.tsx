@@ -67,18 +67,14 @@ function App() {
 
   const getStatus = (
     isXNext: boolean,
-    squares: SquareValue[],
     winner: SquareValue | "Draw" | null
   ): string => {
     if (winner === "Draw") {
       return "Draw";
     } else if (winner) {
-      return isXNext ? "You win!" : "You lose!";
+      return "You " + (isXNext ? "win" : "lose") + "!";
     } else {
-      const currentPlayer = isXNext ? "X" : "O";
-      const isCurrentPlayerTurn =
-        squares.filter((square) => square === currentPlayer).length % 2 === 0;
-      return isCurrentPlayerTurn ? "Your turn" : "Not your turn";
+      return isXNext ? "Your turn" : "Not your turn";
     }
   };
 
@@ -111,9 +107,8 @@ function App() {
         <div className="main">
           <div className="player-content">
             <span className="status primary-text">
-              {getStatus(true, squares, winner)}
+              {getStatus(xIsNext, winner)}
             </span>
-
             <div className="gametable-container">
               <div className="gametable-row">
                 {renderSquare(0, true)}
@@ -134,7 +129,7 @@ function App() {
           </div>
           <div className="player-content">
             <span className="status primary-text">
-              {getStatus(false, squares, winner)}
+              {getStatus(!xIsNext, winner)}
             </span>
             <div className="gametable-container">
               <div className="gametable-row">
