@@ -1,14 +1,15 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  resetGame,
   selectSquares,
   selectWinner,
+  resetGame,
   selectXIsNext,
   setSquare,
   setWinner,
   setXIsNext,
   selectScores,
+  resetScores,
 } from "./gameSlice";
 import "./App.css";
 
@@ -100,7 +101,7 @@ function App() {
               Score: {scores.X}:{scores.O}
             </div>{" "}
             <button
-              onClick={() => dispatch(resetGame())}
+              onClick={() => dispatch(resetScores())}
               className="reset-button"
             >
               Reset

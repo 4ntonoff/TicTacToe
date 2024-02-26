@@ -44,10 +44,13 @@ const gameSlice = createSlice({
       state.xIsNext = true;
       state.winner = null;
     },
+    resetScores: (state) => {
+      state.scores = { X: 0, O: 0 };
+    },
   },
 });
 
-export const { setSquare, setXIsNext, setWinner, resetGame } =
+export const { setSquare, setXIsNext, setWinner, resetGame, resetScores } =
   gameSlice.actions;
 
 export const selectSquares = (state: RootState) => state.game.squares;
