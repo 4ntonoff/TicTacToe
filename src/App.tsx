@@ -8,6 +8,7 @@ import {
   setSquare,
   setWinner,
   setXIsNext,
+  selectScores,
 } from "./gameSlice";
 import "./App.css";
 
@@ -38,6 +39,7 @@ function App() {
   const squares = useSelector(selectSquares);
   const xIsNext = useSelector(selectXIsNext);
   const winner = useSelector(selectWinner);
+  const scores = useSelector(selectScores);
 
   const handleClick = (i: number): void => {
     if (winner || squares[i]) return;
@@ -94,7 +96,9 @@ function App() {
         <div className="heading">
           <span className="player primary-text">Player X</span>
           <div className="score">
-            <div className="score-text">Score: 0:0</div>
+            <div className="score-text">
+              Score: {scores.X}:{scores.O}
+            </div>{" "}
             <button
               onClick={() => dispatch(resetGame())}
               className="reset-button"
